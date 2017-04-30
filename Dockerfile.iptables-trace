@@ -1,0 +1,16 @@
+FROM ubuntu:14.04
+
+RUN sed -i 's#us.archive.ubuntu.com#mirrors.163.com#g' /etc/apt/sources.list
+RUN sed -i 's#archive.ubuntu.com#mirrors.163.com#g' /etc/apt/sources.list
+
+RUN apt-get update && apt-get install -y python2.7-minimal iptables gcc curl unzip libnetfilter-conntrack3     libnetfilter-log1 libnetfilter-queue1 && ln -s python2.7 /usr/bin/python
+
+RUN apt-get install -y python-pcapy python-pip
+
+RUN pip install python-iptables 
+
+RUN cd /usr/local/share/ &&     curl -sSL https://github.com/commonism/python-libnetfilter/archive/master.zip -o python-libnetfilter.zip &&     curl -sSL https://github.com/commonism/iptables-trace/archive/master.zip -o iptables-trace.zip                
+
+RUN cd /usr/local/share/ &&     unzip python-libnetfilter.zip && cd python-libnetfilter-master && python2.7 setup.py install && cd - &&     unzip iptables-trace.zip && chmod a+x iptables-trace-master/bin/iptables-trace.py &&     ln -s /usr/local/share/iptables-trace-master/bin/iptables-trace.py /usr/bin/iptables-trace 
+
+
